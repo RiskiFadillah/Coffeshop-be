@@ -23,14 +23,24 @@ const usersController = {
   },
 
   add: (req, res) => {
-    return usersModel
-      .add(req.body)
-      .then((result) => {
-        return res.status(201).send({ message: "Success", data: result });
-      })
-      .catch((error) => {
-        return res.status(500).send({message: error.message });
-      });
+    if (
+      req.body.name === "" ||
+      req.body.email === "" ||
+      req.body.phone_number
+    ) {
+      return res
+        .status(400)
+        .send({ message: "Data Name, Email and Phone Number must fill" });
+    } else {
+      return usersModel
+        .add(req.body)
+        .then((result) => {
+          return res.status(201).send({ message: "Success", data: result });
+        })
+        .catch((error) => {
+          return res.status(500).send({ message: error.message });
+        });
+    }
   },
   update: (req, res) => {
     const request = {

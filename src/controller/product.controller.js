@@ -1,4 +1,5 @@
 const productModel = require("../model/product.model");
+const { unlink } = require("node:fs");
 
 const productController = {
   get: (req, res) => {
@@ -23,23 +24,55 @@ const productController = {
   },
 
   add: (req, res) => {
-    return productModel
-      .add(req.body)
-      .then((result) => {
-        return res.status(201).send({ message: "Success", data: result });
-      })
-      .catch((error) => {
-        return res.status(500).send({ message: error.message });
-      });
+    const request = {
+      ...req.body,
+      file: req.files,
+    };
+
+    if (
+      req.body.title === "" ||
+      req.body.price === "" ||
+      req.body.category === "" ||
+      req.body.img === ""
+    ) {
+      return res
+        .status(400)
+        .send({ message: "name,price,category dan img harus diisi" });
+    } else {
+      return productModel
+        .add(request)
+        .then((result) => {
+          return res.status(201).send({ message: "Success", data: result });
+        })
+        .catch((error) => {
+          return res.status(500).send({ message: error.message });
+        });
+    }
   },
   update: (req, res) => {
     const request = {
       ...req.body,
       id: req.params.id,
+      file: req.files,
     };
     return productModel
       .update(request)
       .then((result) => {
+        console.log(result);
+        if (typeof result.oldImages != "undefined") {
+          for (let index = 0; index < result.oldImages.length; index++) {
+            console.log(result.oldImages[index].filename);
+            unlink(
+              `public/uploads/images/${result.oldImages[index].filename}`,
+              (err) => {
+                // if (err) throw err;
+                console.log(
+                  `successfully deleted ${result.oldImages[index].filename}`
+                );
+              }
+            );
+          }
+        }
         return res.status(201).send({ message: "Success", data: result });
       })
       .catch((error) => {
@@ -50,6 +83,13 @@ const productController = {
     return productModel
       .remove(req.params.id)
       .then((result) => {
+        for (let index = 0; index < result.length; index++) {
+          unlink(`public/uploads/images/${result[index].filename}`, (err) => {
+            //if (err) throw err;
+            console.log(`successfully deleted ${result[index.filename]}`);
+          });
+        }
+
         return res.status(201).send({ message: "Success", data: result });
       })
       .catch((error) => {

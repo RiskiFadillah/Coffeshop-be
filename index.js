@@ -1,11 +1,12 @@
+require("dotenv").config();
 const { urlencoded, json } = require("express");
 const express = require("express");
 const app = express();
 const db = require("./helper/connection");
 const router = require("./src/router/index");
 const { v4: uuidv4 } = require("uuid");
-require("dotenv").config();
 const cors = require("cors");
+
 
 //Defaultnya Express js itu ga menerima semua jenis form
 //use() middleware urlencoded, json
