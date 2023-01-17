@@ -7,10 +7,11 @@ const router = require("./src/router/index");
 const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
 
+//static file
+app.use(express.static("public"));
 
 //Defaultnya Express js itu ga menerima semua jenis form
 //use() middleware urlencoded, json
-
 //menerima application/x-www-form-urlencoded
 app.use(urlencoded({ extended: true }));
 //menerima Json
@@ -120,6 +121,6 @@ app.get("*", (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("backend successfully running on port 3000");
+app.listen(5000, () => {
+  console.log("backend successfully running on port 5000");
 });

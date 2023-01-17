@@ -47,7 +47,7 @@ const productModel = {
   },
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * from products WHERE id = '${id}'`, (err, result) => {
+      db.query(`SELECT p.id,p.title,p.price,p.category,json_agg(row_to_json(i)) images FROM products AS p LEFT JOIN (SELECT * FROM product_image) AS i ON p.id=i.id_product WHERE p.id = '${id}' GROUP BY p.id`, (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
