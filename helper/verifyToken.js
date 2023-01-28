@@ -18,6 +18,7 @@ const verifyToken = (req, rest, next) => {
           return rest.status(403).send({
             message: "anda tidak memiliki akses",
           });
+          
         }
       } else {
         if (err) {

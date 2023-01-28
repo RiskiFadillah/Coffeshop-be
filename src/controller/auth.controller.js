@@ -20,7 +20,13 @@ const authController = {
             return res.status(200).send({
               message: "Success",
               data: {
-                user: result,
+                user: {
+                  id: result.id,
+                  fullname: result.fullname,
+                  img: result.img,
+                  role: result.role,
+                  username: result.username,
+                },
                 token: tokenResult,
               },
             });
