@@ -61,7 +61,7 @@ const usersModel = {
     });
   },
 
-  update: ({ id_users, name, email, address, img, phone_number }) => {
+  update: ({ id_users, name, email, address, file, phone_number }) => {
     return new Promise((resolve, reject) => {
       db.query(
         `SELECT * FROM users WHERE id_users='${id_users}'`,
@@ -74,7 +74,9 @@ const usersModel = {
                 name || result.rows[0].name
               }', email='${email || result.rows[0].email}', address='${
                 address || result.rows[0].address
-              }', img='${img || result.rows[0].img}', phone_number='${
+              }', img='${
+                file ? file.path : result.rows[0].img
+              }', phone_number='${
                 phone_number || result.rows[0].phone_number
               }' WHERE id = '${id}'`,
               (err, result) => {
@@ -86,7 +88,7 @@ const usersModel = {
                     name,
                     email,
                     address,
-                    img,
+                    img: file,
                     phone_number,
                   });
                 }
