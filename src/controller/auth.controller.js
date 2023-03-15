@@ -21,7 +21,7 @@ const authController = {
               message: "Success",
               data: {
                 user: {
-                  id: result.id,
+                  id_users: result.id_users,
                   fullname: result.fullname,
                   img: result.img,
                   role: result.role,
@@ -58,7 +58,7 @@ const authController = {
           return authModel
             .register(request)
             .then((result) => {
-              return res.status(201).send({ message: "Success", data: result });
+              return res.status(201).send({ message: "Success", data: result});
             })
             .catch((error) => {
               return res.status(500).send({ message: error.message });

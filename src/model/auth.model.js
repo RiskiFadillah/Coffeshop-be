@@ -8,7 +8,7 @@ const authModel = {
     console.log(username, password);
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM usersauth WHERE username=$1`,
+        `SELECT * FROM users WHERE username=$1`,
         [username],
         (err, result) => {
           if (err) {
@@ -39,13 +39,13 @@ const authModel = {
     console.log(username, password);
     return new Promise((resolve, reject) => {
       db.query(
-        `INSERT INTO usersauth (id,username,password) VALUES($1,$2,$3)`,
+        `INSERT INTO users (id_users,username,password) VALUES($1,$2,$3)`,
         [uuidv4(), username, password],
         (err, result) => {
           if (err) {
             return reject(err.message);
           } else {
-            return resolve(result);
+            return resolve(result.data);
           }
         }
       );

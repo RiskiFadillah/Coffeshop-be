@@ -28,7 +28,7 @@ const formUpload = multer({
   },
 });
 
-// fs.unlink('path/file.txt', (err) => {
+// fs.unlink('path/file.', (err) => {
 //   if (err) throw err;
 //   console.log('path/file.txt was deleted');
 // });

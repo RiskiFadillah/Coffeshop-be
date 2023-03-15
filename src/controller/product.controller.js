@@ -33,7 +33,10 @@ const productController = {
       req.body.title === "" ||
       req.body.price === "" ||
       req.body.category === "" ||
-      req.body.img === ""
+      req.body.img === "" ||
+      req.body.description === "" ||
+      req.body.size === "" ||
+      req.body.stock === ""
     ) {
       return res
         .status(400)
@@ -55,17 +58,16 @@ const productController = {
       id: req.params.id,
       file: req.files,
     };
+    // console.log(request);
     return productModel
       .update(request)
       .then((result) => {
-        console.log(result);
         if (typeof result.oldImages != "undefined") {
           for (let index = 0; index < result.oldImages.length; index++) {
             console.log(result.oldImages[index].filename);
             unlink(
               `public/uploads/images/${result.oldImages[index].filename}`,
               (err) => {
-                // if (err) throw err;
                 console.log(
                   `successfully deleted ${result.oldImages[index].filename}`
                 );
@@ -73,10 +75,12 @@ const productController = {
             );
           }
         }
-        return res.status(201).send({ message: "Success", data: result });
+        return res.status(201).send({ message: "succes", data: result });
+        // return formResponse(201, "success", result, res)
       })
       .catch((error) => {
         return res.status(500).send({ message: error });
+        // return formResponse(500, error)
       });
   },
   remove: (req, res) => {

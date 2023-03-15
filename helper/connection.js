@@ -4,7 +4,6 @@ require("dotenv").config();
 // {process.env.DB_USER,process.env.DB_USER}
 // console.log(process.env.DB_HOST)
 
-
 const db = new Client({
   // user: process.env.DB_USER || 'postgres',
   // host: process.env.DB_HOST || "localhost",
@@ -20,6 +19,8 @@ const db = new Client({
 db.connect((err) => {
   if (err) {
     console.log("db connection error", err);
+  } else {
+    console.log("Success connect to database");
   }
   // if (!err) {
   //   console.log("database berhasil tersambung");

@@ -12,7 +12,7 @@ router.post("/", verifyToken, formUpload.array("img"), productController.add);
 // router.put("/", productController.update);
 router.patch(
   "/:id",
-  verifyToken,
+  verifyToken, 
   formUpload.array("img"),
   productController.update
 );
