@@ -1,6 +1,13 @@
 const productModel = require("../model/product.model");
 const { unlink } = require("node:fs");
 
+const Pagination = {
+  page: (page, limit) => {
+    let result = (page - 1) * limit + 1;
+    return result ? result : 0;
+  },
+};
+
 const productController = {
   get: (req, res) => {
     let { search, category, sortBy, page, limit } = req.query;
