@@ -101,7 +101,7 @@ const productModel = {
             for (let index = 0; index < file.length; index++) {
               db.query(
                 `INSERT INTO product_image (id_images,id_product,name,filename) VALUES($1,$2,$3,$4)`,
-                [uuidv4(), result.rows[0].id, title, file[index].filename]
+                [uuidv4(), result.rows[0].id, title, file[index].path]
               );
             }
             return resolve({
