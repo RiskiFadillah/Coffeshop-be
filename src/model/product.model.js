@@ -29,15 +29,9 @@ const productModel = {
     return `GROUP BY products.id ORDER BY title ${sortBy} LIMIT ${limit} OFFSET ${offset}`;
   },
 
-  get: function (queryParams) {
+  get: function (search, category, sortBy = "ASC", limit = 20, offset = 0) {
     // console.log(queryParams);
-    const {
-      search,
-      category,
-      sortBy = "ASC",
-      limit = 20,
-      offset = 0,
-    } = queryParams;
+
     return new Promise((resolve, reject) => {
       db.query(
         ` SELECT 
