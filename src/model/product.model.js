@@ -30,7 +30,7 @@ const productModel = {
   },
 
   get: function (queryParams) {
-    console.log(queryParams);
+    // console.log(queryParams);
     const {
       search,
       category,
