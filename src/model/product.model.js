@@ -3,37 +3,41 @@ const db = require("../../helper/connection");
 const { v4: uuidv4 } = require("uuid");
 const { array } = require("../../helper/formupload");
 
-// ${this.query(
-//   queryParams,
-//   queryParams.sortBy,
-//   queryParams.limit,
-//   queryParams.page
-// )}
 const productModel = {
-  // query: (queryParams, sortType = "asc", limit = 5, page) => {
-  //   if (queryParams.search && queryParams.cat) {
-  //     return `WHERE title ILIKE '%${
-  //       queryParams.search
-  //     }%' AND category ILIKE '%${
-  //       queryParams.cat
-  //     }%' ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${
-  //       page * limit - limit
-  //     }`;
-  //   } else if (queryParams.search || queryParams.cat) {
-  //     return `WHERE title ILIKE '%${queryParams.search}%' OR category ILIKE '%${
-  //       queryParams.cat
-  //     }%' ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${
-  //       page * limit - limit
-  //     }`;
-  //   } else {
-  //     return `ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${
-  //       page * limit - limit
-  //     }`;
-  //   }
-  // },
+  query: (search, category, sortBy, limit, offset) => {
+    let orderQuery = `ORDER BY title ${sortBy} LIMIT ${limit} OFFSET ${offset}`;
+
+    if (search && category) {
+      return `WHERE title LIKE '%${search}%' AND category LIKE '${category}%' ${orderQuery}`;
+    } else if (search || category) {
+      return `WHERE title LIKE '%${search}%' OR category LIKE '${category}%' ${orderQuery}`;
+    } else {
+      return orderQuery;
+    }
+  },
+  whereSearchAndCategory: (search, category) => {
+    if (search && category) {
+      return `WHERE products.title ILIKE '%${search}%' AND category ILIKE '${category}%'`;
+    } else if (search || category) {
+      return `WHERE products.title ILIKE '%${search}%' OR category ILIKE '${category}%'`;
+    } else {
+      return "";
+    }
+  },
+
+  orderAndGroup: (sortBy, limit, offset) => {
+    return `GROUP BY products.id ORDER BY title ${sortBy} LIMIT ${limit} OFFSET ${offset}`;
+  },
+
   get: function (queryParams) {
-    // console.log(queryParams);
-    const { page = 1, limit = 15, search = "" } = queryParams;
+    console.log(queryParams);
+    const {
+      search,
+      category,
+      sortBy = "ASC",
+      limit = 20,
+      offset = 0,
+    } = queryParams;
     return new Promise((resolve, reject) => {
       db.query(
         ` SELECT 
@@ -41,8 +45,8 @@ const productModel = {
         json_agg(row_to_json(product_image)) images
         FROM products
         INNER JOIN product_image ON products.id=product_image.id_product
-       ${search && `AND title ILIKE '%${search}%'`}
-        GROUP BY products.id LIMIT ${limit} OFFSET (${page}-1)*${limit} `,
+        ${this.whereSearchAndCategory(search, category)}
+        ${this.orderAndGroup(sortBy, limit, offset)} `,
         (err, result) => {
           if (err) {
             return reject(err);

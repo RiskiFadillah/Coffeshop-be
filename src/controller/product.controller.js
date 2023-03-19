@@ -3,13 +3,15 @@ const { unlink } = require("node:fs");
 
 const productController = {
   get: (req, res) => {
+    let { search, category, sortBy, page, limit } = req.query;
+    let offset = Pagination.page(page, limit);
     return productModel
-      .get(req.query)
+      .get(search, category, sortBy, limit, offset)
       .then((result) => {
-        return res.status(200).send({ message: "Success", data: result });
+        return res.status(200).send({ message: "success", data: result });
       })
       .catch((error) => {
-        return res.status(500).send({ message: error.message });
+        return res.status(500).send({ message: error });
       });
   },
   getDetail: (req, res) => {
