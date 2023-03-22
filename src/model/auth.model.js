@@ -4,28 +4,28 @@ const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
 const authModel = {
-  login: ({ username, password }) => {
-    console.log(username, password);
+  login: ({ email, password }) => {
+    console.log(email, password);
     return new Promise((resolve, reject) => {
       db.query(
         `SELECT * FROM users WHERE username=$1`,
-        [username],
+        [email],
         (err, result) => {
           if (err) {
             return reject(err.message);
           } else {
             if (result.rows.length == 0) {
-              return reject("username/password salah"); //ketika username salah
+              return reject("email/password salah"); //ketika username salah
             } else {
               bcrypt.compare(
                 password,
                 result.rows[0].password,
                 function (err, hashingResult) {
-                  if (err) return reject("username/password salah"); //ketika kesalaahan hashing bycrypt
+                  if (err) return reject("email/password salah"); //ketika kesalaahan hashing bycrypt
                   if (hashingResult) {
                     return resolve(result.rows[0]);
                   } else {
-                    return reject("username/password salah."); //ketika password salah
+                    return reject("email/password salah."); //ketika password salah
                   }
                 }
               );

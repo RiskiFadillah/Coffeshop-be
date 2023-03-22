@@ -25,7 +25,7 @@ const authController = {
                   fullname: result.fullname,
                   img: result.img,
                   role: result.role,
-                  username: result.username,
+                  email: result.email,
                 },
                 token: tokenResult,
               },
