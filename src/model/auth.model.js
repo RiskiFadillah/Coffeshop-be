@@ -35,17 +35,17 @@ const authModel = {
       );
     });
   },
-  register: ({ username, password }) => {
-    console.log(username, password);
+  register: ({ email, password, phone_number }) => {
+    console.log(email, password, phone_number);
     return new Promise((resolve, reject) => {
       db.query(
-        `INSERT INTO users (id_users,username,password) VALUES($1,$2,$3)`,
-        [uuidv4(), username, password],
+        `INSERT INTO users (id_users,email,password,phone_number) VALUES($1,$2,$3,$4)`,
+        [uuidv4(), email, password, phone_number],
         (err, result) => {
           if (err) {
             return reject(err.message);
           } else {
-            return resolve(result.data);
+            return resolve({ email, password, phone_number });
           }
         }
       );
