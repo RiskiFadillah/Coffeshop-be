@@ -46,6 +46,7 @@ const usersController = {
     const request = {
       ...req.body,
       id: req.params.id,
+      file: req.file,
     };
     return usersModel
       .update(request)
