@@ -41,7 +41,17 @@ const authModel = {
           if (err) {
             return reject(err.message);
           } else {
-            return resolve({ email, password, phone_number });
+            db.query(
+              `SELECT * FROM users WHERE email=$1`,
+              [email],
+              (err, result) => {
+                if (err) {
+                  return reject(err.message);
+                } else {
+                  return resolve(result.rows[0]);
+                }
+              }
+            );
           }
         }
       );

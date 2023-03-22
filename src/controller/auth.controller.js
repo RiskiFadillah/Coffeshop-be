@@ -37,40 +37,69 @@ const authController = {
         return res.status(500).send({ message: error });
       });
   },
+  // register: (req, res) => {
+  //   if (
+  //     req.body.password === "" &&
+  //     req.body.email === "" &&
+  //     req.body.phone_number === ""
+  //   ) {
+  //     return res
+  //       .status(400)
+  //       .send({ message: "Password Email and Phone number must be fill" });
+  //   } else if (req.body.password.length <= 6) {
+  //     return res
+  //       .status(400)
+  //       .send({ message: "Password must more than 6 character" });
+  //   } else {
+  //     bcrypt.hash(req.body.password, 10, (err, hash) => {
+  //       if (err) {
+  //         return res.status(500).send({ message: err.message });
+  //       } else {
+  //         const request = {
+  //           email: req.body.email,
+  //           password: hash,
+  //           phone_number: req.body.phone_number,
+  //         };
+  //         return authModel
+  //           .register(request)
+  //           .then((result) => {
+  //             return res.status(201).send({ message: "Success", data: result });
+  //           })
+  //           .catch((error) => {
+  //             return res.status(500).send({ message: error.message });
+  //           });
+  //       }
+  //     });
+  //   }
+  // },
   register: (req, res) => {
-    if (
-      req.body.password === "" &&
-      req.body.email === "" &&
-      req.body.phone_number === ""
-    ) {
-      return res
-        .status(400)
-        .send({ message: "Password Email and Phone number must be fill" });
-    } else if (req.body.password.length <= 6) {
-      return res
-        .status(400)
-        .send({ message: "Password must more than 6 character" });
-    } else {
-      bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) {
-          return res.status(500).send({ message: err.message });
-        } else {
-          const request = {
-            email: req.body.email,
-            password: hash,
-            phone_number: req.body.phone_number,
-          };
-          return authModel
-            .register(request)
-            .then((result) => {
-              return res.status(201).send({ message: "Success", data: result });
-            })
-            .catch((error) => {
-              return res.status(500).send({ message: error.message });
+    if (req.body.email == "")
+      return res.status(400).send({ message: `Email can't be empty!` });
+    if (req.body.phone_number == "")
+      return res.status(400).send({ message: `Phone Number can't be empty!` });
+    if (req.body.password == "")
+      return res.status(400).send({ message: `Password can't be empty!` });
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+      if (err) {
+        return res.status(500).send({ message: err.message });
+      } else {
+        const request = {
+          ...req.body,
+          password: hash,
+        };
+        return authModel
+          .register(request)
+          .then((result) => {
+            return res.status(201).send({
+              message: "Register success!",
+              data: result,
             });
-        }
-      });
-    }
+          })
+          .catch((error) => {
+            return res.status(500).send({ message: error });
+          });
+      }
+    });
   },
 };
 

@@ -45,7 +45,7 @@ const usersController = {
   update: (req, res) => {
     const request = {
       ...req.body,
-      id: req.params.id,
+      id_users: req.params.id_users,
       file: req.file,
     };
     return usersModel
@@ -54,7 +54,7 @@ const usersController = {
         return res.status(201).send({ message: "Success", data: result });
       })
       .catch((error) => {
-        return res.status(500).send({ message: error });
+        return res.status(400).send({ message: error });
       });
   },
   remove: (req, res) => {
