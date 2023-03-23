@@ -22,8 +22,11 @@ const authController = {
               data: {
                 user: {
                   id_users: result.id_users,
-                  fullname: result.fullname,
+                  username: result.username,
                   img: result.img,
+                  phone_number: result.phone_number,
+                  gender: result.gender,
+                  address: result.address,
                   role: result.role,
                   email: result.email,
                 },
