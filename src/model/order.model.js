@@ -4,7 +4,7 @@ const orderModel = {
   add: (order) => {
     return new Promise((resolve, reject) => {
       db.query(
-        "INSERT INTO order_products (id_order, user_id, quantity, total_price,product_id,delivery,time) VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *",
+        "INSERT INTO order_products (id_order, user_id, quantity, total_price,product_id,delivery,time,product_image) VALUES ($1, $2, $3, $4, $5,$6,$7,$8) RETURNING *",
         [
           uuidv4(),
           order.user_id,
@@ -13,6 +13,7 @@ const orderModel = {
           order.id,
           order.delivery,
           order.time,
+          order.product_image,
         ],
         (err, result) => {
           if (err) {
