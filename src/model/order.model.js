@@ -31,7 +31,7 @@ const orderModel = {
       db.query(
         `SELECT order_products.id_order, order_products.user_id, order_products.product_id, order_products.quantity, order_products.total_price,
         products.title, products.price, products.category,
-        json_agg(row_to_json(product_image)) product_image
+        json_agg(json_build_object('${filename}', product_image.filename)) images
         FROM order_products
         INNER JOIN products ON  products.id = order_products.product_id
         INNER JOIN product_image ON products.id = product_image.id_product
