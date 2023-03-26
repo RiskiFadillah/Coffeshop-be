@@ -29,7 +29,7 @@ const orderModel = {
   getByUserId: (id_users) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT order_products.id_order, order_products.user_id, order_products.product_id, order_products.quantity, order_products.total_price,
+        `SELECT order_products.id_order, order_products.user_id, order_products.product_id, order_products.quantity, order_products.total_price,order_products.time,
         products.title, products.price, products.category,
         json_agg(json_build_object('filename', product_image.filename)) images
     FROM order_products
